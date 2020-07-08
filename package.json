@@ -8,12 +8,11 @@
     "build": "lerna run build",
     "dev": "lerna run start --stream --parallel",
     "format": "yarn prettier --write",
-    "prettier": "prettier --ignore-path .gitignore \"**/*.+(ts|tsx|json)\"",
-    "test": "lerna run test --"
+    "prettier": "prettier --ignore-path .gitignore \"**/*.+(ts|tsx|json|md)\""
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn format && yarn test"
+      "pre-commit": "yarn format"
     }
   },
   "devDependencies": {
