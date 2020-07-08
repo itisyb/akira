@@ -1,0 +1,10 @@
+*
+!./lerna.json
+!./package.json
+!./tsconfig.json
+!./yarn.lock
+!./packages/akira/src
+!./packages/akira/types
+!./packages/akira/ormconfig.js
+!./packages/akira/package.json
+!./packages/akira/tsconfig.json
