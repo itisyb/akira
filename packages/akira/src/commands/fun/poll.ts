@@ -74,9 +74,11 @@ export const command: Command<string[]> = {
 
     await reply.delete();
 
-    embed.description = `${embed.description}\n\n${anonymousPollPhrase}`;
+    if (reply.content.toLowerCase() === "y") {
+      embed.description = `${embed.description}\n\n${anonymousPollPhrase}`;
 
-    await pollMessage.edit({ embed });
+      await pollMessage.edit({ embed });
+    }
 
     return Question.insert({
       messageId: pollMessage.id,
