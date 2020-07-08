@@ -25,6 +25,7 @@
     "lodash.snakecase": "^4.1.1",
     "pg": "^8.2.1",
     "reflect-metadata": "^0.1.13",
+    "tslib": "^2.0.0",
     "typeorm": "^0.2.25",
     "typeorm-naming-strategies": "^1.1.0",
     "winston": "^3.3.3"
@@ -34,11 +35,10 @@
     "@types/lodash.snakecase": "^4.1.6",
     "@types/ws": "^7.2.5",
     "ts-node-dev": "^1.0.0-pre.49",
-    "tslib": "^2.0.0",
     "typescript": "^4.0.0-beta"
   },
   "engines": {
-    "node": "14.4.0",
+    "node": ">=14.0.0",
     "npm": "6.14.5",
     "yarn": "1.22.4"
   }
