@@ -1,5 +1,4 @@
 import { Message, MessageEmbedOptions } from "discord.js";
-import { Question } from "../../entity/Question";
 import { Command } from "../../util/registerCommandsAndEvents";
 import { numericEmojis } from "../../util/utilities";
 
@@ -19,8 +18,8 @@ export const command: Command<string[]> = {
     "ADD_REACTIONS",
   ],
   userPermissions: ["EMBED_LINKS", "ADD_REACTIONS"],
-  validateArgs: (_, args) => args.join(" ").split(" | "),
-  async execute(message, [question, ...answers]) {
+  validateArgs: (args) => args.join(" ").split(" | "),
+  async execute(message, [question, ...answers], db) {
     if (answers.length < 2 || answers.length > 10) {
       return message.reply(
         "please provide at least 2 possible answers with a maximum of 10"
@@ -80,12 +79,14 @@ export const command: Command<string[]> = {
       await pollMessage.edit({ embed });
     }
 
-    return Question.insert({
-      messageId: pollMessage.id,
-      authorId: message.author.id,
-      question,
-      possibleAnswers: answers,
-      isAnonymous: reply.content.toLowerCase() === "y",
+    return db.question.create({
+      data: {
+        id: pollMessage.id,
+        authorId: message.author.id,
+        question,
+        possibleAnswers: { set: answers },
+        isAnonymous: reply.content.toLowerCase() === "y",
+      },
     });
   },
 };

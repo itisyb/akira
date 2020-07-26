@@ -7,9 +7,12 @@ export const command: Command<string | undefined> = {
   acceptsArgs: true,
   requiresArgs: false,
   userPermissions: ["MANAGE_GUILD"],
-  validateArgs: (_, args) => args[0],
-  async execute(message, newPrefix) {
-    const { prefix } = await message.guild!.get(["prefix"]);
+  validateArgs: (args) => args[0],
+  async execute(message, newPrefix, db) {
+    const { prefix } = (await db.guildSettings.findOne({
+      select: { prefix: true },
+      where: { id: message.guild!.id },
+    })) ?? { prefix: process.env.PREFIX };
 
     if (!newPrefix) {
       return message.channel.send(`The current prefix is ${prefix}`);
@@ -21,9 +24,15 @@ export const command: Command<string | undefined> = {
       );
     }
 
-    await message.guild!.set({
-      prefix: newPrefix,
-      updatedBy: message.author.id,
+    await db.guildSettings.upsert({
+      where: { id: message.guild!.id },
+      create: {
+        id: message.guild!.id,
+        prefix: newPrefix,
+        updatedBy: message.author.id,
+        action: `Set prefix to "${newPrefix}"`,
+      },
+      update: { prefix: newPrefix },
     });
 
     if (newPrefix === process.env.PREFIX) {

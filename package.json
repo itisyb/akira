@@ -6,9 +6,9 @@
   ],
   "scripts": {
     "build": "lerna run build",
-    "dev": "lerna run start --stream --parallel",
     "format": "yarn prettier --write",
-    "prettier": "prettier --ignore-path .gitignore \"**/*.+(ts|tsx|json|md)\""
+    "prettier": "prettier --ignore-path .gitignore \"**/*.+(ts|tsx|json|md)\"",
+    "start": "lerna run start --stream --parallel"
   },
   "husky": {
     "hooks": {
