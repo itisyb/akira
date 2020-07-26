@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model GuildSettings {
+  /// Id of the guild
+  id        String   @id
+  prefix    String   @default(value: "!")
+  updatedBy String   @default(value: "673530627018063872") @map(name: "updated_by")
+  /// Action that caused the update
+  action    String
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "guild_settings")
+}
+
+model Answer {
+  id          Int       @id @default(autoincrement())
+  userId      String    @map(name: "user_id")
+  answerIndex Int       @map(name: "answer_index")
+  question    Question? @relation(fields: [questionId], references: [id])
+  questionId  String?   @map(name: "question_id")
+
+  @@unique([userId, questionId], name: "answer_user_id_question_id_key")
+  @@map(name: "answer")
+}
+
+model Question {
+  /// Id of the message the question belongs to
+  id              String   @id
+  authorId        String   @map(name: "author_id")
+  question        String
+  possibleAnswers String[] @map(name: "possible_answers")
+  isAnonymous     Boolean  @map(name: "is_anonymous")
+  answers         Answer[]
+
+  @@map(name: "question")
+}

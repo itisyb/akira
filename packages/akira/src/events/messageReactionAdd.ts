@@ -1,13 +1,10 @@
 import { MessageEmbed } from "discord.js";
-import { getRepository } from "typeorm";
 import { anonymousPollPhrase } from "../commands/fun/poll";
-import { Answer } from "../entity/Answer";
-import { Question } from "../entity/Question";
 import { Event } from "../util/registerCommandsAndEvents";
 import { numericEmojis } from "../util/utilities";
 
 export const event: Event<"messageReactionAdd"> = {
-  run: async (reaction, user) => {
+  run: async (reaction, user, _client, db) => {
     if (user.bot) {
       return;
     }
@@ -21,30 +18,43 @@ export const event: Event<"messageReactionAdd"> = {
     const [embed] = reaction.message.embeds as [MessageEmbed?];
 
     if (numericEmojiIdx >= 0 && embed?.footer?.text?.includes("poll")) {
-      const question = await Question.findOne(reaction.message.id);
+      const question = await db.question.findOne({
+        where: { id: reaction.message.id },
+      });
 
       if (question) {
-        await getRepository(Answer)
-          .createQueryBuilder()
-          .insert()
-          .orUpdate({
-            conflict_target: "uc_ids",
-            overwrite: ["answer_index"],
-          })
-          .values({
+        await db.answer.upsert({
+          where: {
+            answer_user_id_question_id_key: {
+              questionId: question.id,
+              userId: user.id,
+            },
+          },
+          create: {
             userId: user.id,
             answerIndex: numericEmojiIdx,
-            question,
-          })
-          .execute();
+            question: {
+              connect: {
+                id: question.id,
+              },
+            },
+          },
+          update: { answerIndex: numericEmojiIdx },
+        });
 
         if (question.isAnonymous) {
           await reaction.users.remove(user.id);
-          const count = await Answer.count({ where: { question } });
+          const count = await db.answer.count({
+            where: { questionId: question.id },
+          });
           const voteCountPhrase = `🗳 **Total votes:** \`${count}\``;
 
+          const formattedAnswers = question.possibleAnswers
+            .map((answer, idx) => `${numericEmojis[idx]}: **${answer}**`)
+            .join("\n");
+
           embed.setDescription(
-            `${question.formattedAnswers}\n\n${voteCountPhrase}\n${anonymousPollPhrase}`
+            `${formattedAnswers}\n\n${voteCountPhrase}\n${anonymousPollPhrase}`
           );
 
           await reaction.message.edit(embed);
@@ -65,7 +75,10 @@ export const event: Event<"messageReactionAdd"> = {
     if (reaction.emoji.name === "✅" && embed?.footer?.text?.includes("poll")) {
       await reaction.users.remove(user.id);
 
-      const question = await Question.findOne(reaction.message.id);
+      const question = await db.question.findOne({
+        where: { id: reaction.message.id },
+        include: { answers: true },
+      });
 
       if (question && question.authorId === user.id) {
         const results = numericEmojis
@@ -85,7 +98,7 @@ export const event: Event<"messageReactionAdd"> = {
 
         await reaction.message.edit(embed);
 
-        await Question.delete({ messageId: question.messageId });
+        await db.question.delete({ where: { id: question.id } });
       }
     }
     // End

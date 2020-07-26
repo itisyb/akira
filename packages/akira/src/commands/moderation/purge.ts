@@ -10,7 +10,7 @@ export const command: Command<number> = {
   requiresArgs: true,
   clientPermissions: ["MANAGE_MESSAGES", "READ_MESSAGE_HISTORY"],
   userPermissions: ["MANAGE_MESSAGES"],
-  validateArgs: (_, args) => {
+  validateArgs: (args) => {
     const amount = Number(args[0]);
 
     return isNaN(amount) ? undefined : amount;

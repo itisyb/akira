@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import {
   Client,
   ClientEvents,
@@ -16,7 +17,7 @@ type CommandWithArgsProps<T> = {
   requiresArgs: boolean;
   usage: string;
   examples?: string[];
-  validateArgs(message: Message, args: string[]): MaybePromise<T | undefined>;
+  validateArgs(args: string[], message: Message): MaybePromise<T | undefined>;
 };
 
 export type Command<T = void> = {
@@ -28,14 +29,16 @@ export type Command<T = void> = {
   aliases?: string[];
   clientPermissions?: PermissionResolvable[];
   userPermissions?: PermissionResolvable[];
-  execute(message: Message, args: T): MaybePromise<unknown>;
+  execute(message: Message, args: T, db: PrismaClient): MaybePromise<unknown>;
 } & (T extends void ? {} : CommandWithArgsProps<T>);
 
 export interface Event<T extends keyof ClientEvents> {
   // Can be inferred from filename
   eventName?: T;
   emitOnce?: boolean;
-  run(...args: [...ClientEvents[T], Client]): MaybePromise<unknown>;
+  run(
+    ...args: [...ClientEvents[T], Client, PrismaClient]
+  ): MaybePromise<unknown>;
 }
 
 interface Directories {

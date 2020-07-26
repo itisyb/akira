@@ -4,8 +4,8 @@ import { logger } from "../util/logger";
 import { commands, Event } from "../util/registerCommandsAndEvents";
 
 export const event: Event<"message"> = {
-  run: async (message) => {
-    const { author, guild, channel, content, client } = message;
+  run: async (message, client, db) => {
+    const { author, guild, channel, content } = message;
 
     if (author.bot || !guild?.available || !(channel instanceof TextChannel)) {
       return;
@@ -17,7 +17,10 @@ export const event: Event<"message"> = {
       return;
     }
 
-    const { prefix } = await guild.get(["prefix"]);
+    const { prefix } = (await db.guildSettings.findOne({
+      select: { prefix: true },
+      where: { id: guild.id },
+    })) ?? { prefix: process.env.PREFIX };
 
     if (!content.startsWith(prefix)) {
       return;
@@ -49,8 +52,8 @@ export const event: Event<"message"> = {
 
     if (command.acceptsArgs) {
       const validatedArgs = isPromise(command.validateArgs)
-        ? await command.validateArgs(message, args)
-        : command.validateArgs(message, args);
+        ? await command.validateArgs(args, message)
+        : command.validateArgs(args, message);
 
       if (!validatedArgs && command.requiresArgs) {
         return logger.warn(
@@ -58,9 +61,9 @@ export const event: Event<"message"> = {
         );
       }
 
-      return command.execute(message, validatedArgs);
+      return command.execute(message, validatedArgs, db);
     }
 
-    return command.execute(message, args);
+    return command.execute(message, args, db);
   },
 };
