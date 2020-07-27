@@ -13,6 +13,8 @@ COPY ./packages/akira/package*.json ./packages/akira/
 COPY ./packages/akira/tsconfig.json ./packages/akira
 RUN yarn install --frozen-lockfile
 RUN yarn build
+
+FROM builder as migrate
 RUN yarn workspace akira prisma migrate up --experimental
 
 FROM base AS app
