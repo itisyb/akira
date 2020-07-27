@@ -89,5 +89,3 @@ migration ..20200726104642
 +  @@map(name: "question")
 +}
 ```
-
-
