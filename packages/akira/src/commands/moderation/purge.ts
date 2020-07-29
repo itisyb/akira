@@ -29,8 +29,15 @@ export const command: Command<number> = {
     try {
       const collection = await message.channel.bulkDelete(messages, true);
 
+      let extraInfo = "";
+
+      if (collection.size < amount) {
+        extraInfo +=
+          ",\npinned messages are ignored / messages older than 14 days cannot be removed by bots";
+      }
+
       const response = await message.channel.send(
-        `Successfully deleted \`${collection.size}/${amount}\` message(s), messages older than 14 days cannot be removed by bots`
+        `Successfully deleted \`${collection.size}/${amount}\` message(s)${extraInfo}`
       );
 
       return response.delete({ timeout: 10000 });
