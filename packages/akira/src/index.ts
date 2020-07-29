@@ -24,7 +24,9 @@ const main = async () => {
     restRequestTimeout: 60000,
   });
 
-  const prismaClient = new PrismaClient({ log: ["query"] });
+  const prismaClient = new PrismaClient({
+    ...(process.env.NODE_ENV === "development" && { log: ["query"] }),
+  });
 
   events.forEach(({ eventName, emitOnce, run }) =>
     client[emitOnce ? "once" : "on"](eventName!, (...args) =>
