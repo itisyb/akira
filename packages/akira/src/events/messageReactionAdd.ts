@@ -1,4 +1,3 @@
-import { MessageEmbed } from "discord.js";
 import { anonymousPollPhrase } from "../commands/fun/poll";
 import { Event } from "../util/registerCommandsAndEvents";
 import { numericEmojis } from "../util/utilities";
@@ -15,7 +14,8 @@ export const event: Event<"messageReactionAdd"> = {
 
     // Extends commands/fun/poll.ts
     const numericEmojiIdx = numericEmojis.indexOf(reaction.emoji.name);
-    const [embed] = reaction.message.embeds as [MessageEmbed?];
+    const embeds = reaction.message.embeds;
+    const embed = embeds.length ? embeds[0] : undefined;
 
     if (numericEmojiIdx >= 0 && embed?.footer?.text?.includes("poll")) {
       const question = await db.question.findOne({
@@ -44,11 +44,12 @@ export const event: Event<"messageReactionAdd"> = {
 
         if (question.isAnonymous) {
           await reaction.users.remove(user.id);
+
           const count = await db.answer.count({
             where: { questionId: question.id },
           });
-          const voteCountPhrase = `🗳 **Total votes:** \`${count}\``;
 
+          const voteCountPhrase = `🗳 **Total votes:** \`${count}\``;
           const formattedAnswers = question.possibleAnswers
             .map((answer, idx) => `${numericEmojis[idx]}: **${answer}**`)
             .join("\n");
