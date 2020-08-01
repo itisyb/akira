@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { Client, Intents } from "discord.js";
 import "dotenv/config";
+import Redis from "ioredis";
+import { prefixCached } from "./middleware/prefixCached";
 import {
   events,
   registerCommandsAndEvents,
@@ -24,9 +26,13 @@ const main = async () => {
     restRequestTimeout: 60000,
   });
 
+  const redis = new Redis(process.env.REDIS_URL);
+
   const prismaClient = new PrismaClient({
     ...(process.env.NODE_ENV === "development" && { log: ["query"] }),
   });
+
+  prismaClient.use(prefixCached(redis));
 
   events.forEach(({ eventName, emitOnce, run }) =>
     client[emitOnce ? "once" : "on"](eventName!, (...args) =>
