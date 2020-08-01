@@ -1,7 +1,17 @@
-import { TextChannel } from "discord.js";
+import { PermissionString, TextChannel } from "discord.js";
 import isPromise from "is-promise";
-import { logger } from "../util/logger";
 import { commands, Event } from "../util/registerCommandsAndEvents";
+import { searchCommandByName } from "../util/utilities";
+
+const formatPermission = (permissionString: PermissionString) => {
+  const permission = permissionString
+    .toLowerCase()
+    .split("_")
+    .map((str) => `${str.charAt(0).toUpperCase()}${str.slice(1)}`)
+    .join(" ");
+
+  return `\`${permission}\``;
+};
 
 export const event: Event<"message"> = {
   run: async (message, client, db) => {
@@ -30,14 +40,31 @@ export const event: Event<"message"> = {
     const command = commands.get(commandName.toLowerCase());
 
     if (!command) {
-      return logger.warn(`${commandName} is not a valid command`);
+      // Check if commandName is a isogram
+      if (!/(.).*\1/.test(commandName)) {
+        return;
+      }
+
+      const closest = searchCommandByName(commandName.toLowerCase());
+
+      let response = `**${commandName}** is not a valid command`;
+
+      if (closest) {
+        response += `, did you mean: **${closest}**?\nYou can send \`${prefix}help ${closest}\` for more information about this command`;
+      }
+
+      return message.channel.send(response);
     }
 
     if (command.clientPermissions) {
       const missingPerms = clientPerms.missing(command.clientPermissions);
 
       if (missingPerms.length) {
-        return logger.warn(`Client is missing permissions: ${missingPerms}`);
+        return message.channel.send(
+          `I am missing the following permission(s): ${missingPerms
+            .map(formatPermission)
+            .join(", ")}`
+        );
       }
     }
 
@@ -46,7 +73,11 @@ export const event: Event<"message"> = {
       const missingPerms = userPerms?.missing(command.userPermissions);
 
       if (missingPerms?.length) {
-        return logger.warn(`User is missing permissions: ${missingPerms}`);
+        return message.channel.send(
+          `You are missing the following permission(s): ${missingPerms
+            .map(formatPermission)
+            .join(", ")}`
+        );
       }
     }
 
@@ -56,8 +87,8 @@ export const event: Event<"message"> = {
         : command.validateArgs(args, message);
 
       if (!validatedArgs && command.requiresArgs) {
-        return logger.warn(
-          `Invalid arguments provided for command ${command.name}`
+        return message.channel.send(
+          `Invalid argument(s) provided for this command, the usage would be: \`${prefix}${command.name} ${command.usage}\``
         );
       }
 
