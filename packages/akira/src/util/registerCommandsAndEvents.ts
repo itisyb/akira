@@ -16,7 +16,7 @@ type CommandWithArgsProps<T> = {
   acceptsArgs: true;
   requiresArgs: boolean;
   usage: string;
-  examples?: string[];
+  examples?: Example[];
   validateArgs(args: string[], message: Message): MaybePromise<T | undefined>;
 };
 
@@ -31,6 +31,11 @@ export type Command<T = void> = {
   userPermissions?: PermissionResolvable[];
   execute(message: Message, args: T, db: PrismaClient): MaybePromise<unknown>;
 } & (T extends void ? {} : CommandWithArgsProps<T>);
+
+interface Example {
+  usage: string;
+  description: string;
+}
 
 export interface Event<T extends keyof ClientEvents> {
   // Can be inferred from filename

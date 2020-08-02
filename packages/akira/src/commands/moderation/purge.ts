@@ -5,7 +5,7 @@ export const command: Command<number> = {
     "Delete up to 100 messages at a time (excluding pinned messages)",
   aliases: ["delete", "nuke"],
   usage: "<amount>",
-  examples: ["25", "50", "100"],
+  examples: [{ usage: "25", description: "Deletes 25 messages" }],
   acceptsArgs: true,
   requiresArgs: true,
   clientPermissions: ["MANAGE_MESSAGES", "READ_MESSAGE_HISTORY"],

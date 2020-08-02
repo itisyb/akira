@@ -8,7 +8,12 @@ export const anonymousPollPhrase =
 export const command: Command<string[]> = {
   description: "Start a public or anonymous poll",
   usage: "<question, answers separated by |>",
-  examples: ["What is the best looking color? | Red | Green | Blue"],
+  examples: [
+    {
+      usage: "What is the best looking color? | Red | Green | Blue",
+      description: "Starts a poll with 1 question and 3 possible answers",
+    },
+  ],
   acceptsArgs: true,
   requiresArgs: true,
   clientPermissions: [

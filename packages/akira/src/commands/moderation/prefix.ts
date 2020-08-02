@@ -3,7 +3,7 @@ import { Command } from "../../util/registerCommandsAndEvents";
 export const command: Command<string | undefined> = {
   description: "Get or change the current prefix",
   usage: "<new prefix?>",
-  examples: ["-", "/", "$"],
+  examples: [{ usage: "$", description: 'Sets the prefix to "$"' }],
   acceptsArgs: true,
   requiresArgs: false,
   userPermissions: ["MANAGE_GUILD"],
