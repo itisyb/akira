@@ -51,6 +51,6 @@ export const command: Command<string> = {
     const answer =
       possibleAnswers[Math.floor(Math.random() * possibleAnswers.length)];
 
-    message.channel.send(answer);
+    return message.channel.send(answer);
   },
 };
