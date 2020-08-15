@@ -22,7 +22,7 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.3.0",
+    "@prisma/cli": "^2.4.1",
     "@types/glob": "^7.1.2",
     "@types/ioredis": "^4.17.3",
     "@types/ws": "^7.2.5",
