@@ -11,18 +11,22 @@
     "start": "ts-node-dev --no-notify --respawn --transpile-only --poll src/index.ts"
   },
   "dependencies": {
-    "@prisma/client": "^2.3.0",
+    "@nexus/schema": "^0.15.0",
+    "apollo-server-fastify": "3.0.0-alpha.3",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
+    "fastify": "^3.4.1",
     "fuse.js": "^6.4.1",
     "glob": "^7.1.6",
+    "graphql": "^15.3.0",
     "ioredis": "^4.17.3",
     "is-promise": "^4.0.0",
+    "make-promises-safe": "^5.1.0",
+    "nexus-plugin-prisma": "^0.19.0",
     "tslib": "^2.0.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.4.1",
     "@types/glob": "^7.1.2",
     "@types/ioredis": "^4.17.3",
     "@types/ws": "^7.2.5",
