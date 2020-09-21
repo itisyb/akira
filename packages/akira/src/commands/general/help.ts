@@ -1,6 +1,9 @@
 import { MessageEmbedOptions } from "discord.js";
 import { Command, commands } from "../../util/registerCommandsAndEvents";
-import { searchCommandByName } from "../../util/utilities";
+import {
+  getCommandsByCategory,
+  searchCommandByName,
+} from "../../util/utilities";
 
 export const command: Command<string | undefined> = {
   description: "Shows all of my commands or info about a specific command",
@@ -81,29 +84,7 @@ export const command: Command<string | undefined> = {
       fields: [],
     };
 
-    const commandsByCategory = [...commands.values()].reduce<
-      Array<{ category: string; commands: Command<unknown>[] }>
-    >((acc, command) => {
-      const category = `${command
-        .category!.charAt(0)
-        .toUpperCase()}${command.category!.slice(1)}`;
-
-      const idx = acc.findIndex((entry) => entry.category === category);
-
-      if (idx >= 0) {
-        const commandExists = acc[idx].commands.some(
-          (cmd) => cmd.name === command.name
-        );
-
-        if (!commandExists) {
-          acc[idx].commands.push(command);
-        }
-      } else {
-        acc.push({ category, commands: [command] });
-      }
-
-      return acc;
-    }, []);
+    const commandsByCategory = getCommandsByCategory();
 
     commandsByCategory.forEach(({ category, commands }) =>
       embed.fields!.push({

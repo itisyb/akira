@@ -1,5 +1,7 @@
 import Fuse from "fuse.js";
-import { commands } from "./registerCommandsAndEvents";
+import { Command, commands } from "./registerCommandsAndEvents";
+
+type CommandMap = { [category: string]: Command[] };
 
 export type MaybeArray<T> = T | T[];
 
@@ -22,4 +24,29 @@ export const searchCommandByName = (name: string) => {
   const result = fuse.search(name, { limit: 1 });
 
   return result.length && result[0].item;
+};
+
+export const getCommandsByCategory = () => {
+  const commandMap: CommandMap = {};
+
+  for (const command of [...commands.values()]) {
+    const category = command.category ?? "?";
+
+    if (commandMap[category]) {
+      const commandInCategory = commandMap[category].some(
+        (cmd) => cmd.name !== command.name
+      );
+
+      if (!commandInCategory) {
+        commandMap[category].push(command);
+      }
+    } else {
+      commandMap[category] = [command];
+    }
+  }
+
+  return Object.entries(commandMap).map(([category, commands]) => ({
+    category,
+    commands,
+  }));
 };
