@@ -7,7 +7,7 @@
   "scripts": {
     "build": "lerna run build",
     "format": "yarn prettier --write",
-    "prettier": "prettier --ignore-path .gitignore \"**/*.+(ts|tsx|json|md)\"",
+    "prettier": "prettier --ignore-path .gitignore \"**/!(*d).+(ts|tsx|json|md)\"",
     "start": "lerna run start --stream --parallel"
   },
   "husky": {
