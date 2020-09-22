@@ -33,15 +33,17 @@ export const command: Command<number> = {
 
       if (collection.size < amount) {
         response +=
-          ",\npinned messages are ignored / messages older than 14 days cannot be removed by bots";
+          ". Pinned messages are ignored. Messages older than 14 days cannot be removed by bots";
       }
 
       const sentMessage = await message.channel.send(response);
 
-      return sentMessage.delete({ timeout: 10000 });
+      await sentMessage.delete({ timeout: 10000 });
+
+      return;
     } catch (error) {
       return message.channel.send(
-        `Error trying to delete messages:\n\n\`${error.message}\``
+        `There was an error attempting to delete messages: \`${error.message}\``
       );
     }
   },
