@@ -63,15 +63,15 @@ export const getCommandsByCategory = () => {
 export const cacheMiddleware = ({
   model,
   action,
-  cacheSpecificDataset: cacheSpecificQuerySet,
+  cacheSpecificDataset,
   cacheExpireTimeInSeconds,
 }: CacheMiddlewareOptions): Middleware => async (params, next) => {
   if (params.model !== model || action !== params.action) {
     return next(params);
   }
 
-  if (cacheSpecificQuerySet) {
-    const allKeysMatch = cacheSpecificQuerySet.every((key) =>
+  if (cacheSpecificDataset) {
+    const allKeysMatch = cacheSpecificDataset.every((key) =>
       Object.keys(params.args.select).includes(key)
     );
 
