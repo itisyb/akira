@@ -1,9 +1,18 @@
+import { Middleware, PrismaAction } from "@prisma/client";
 import Fuse from "fuse.js";
+import { redis } from "../clients";
 import { Command, commands } from "./registerCommandsAndEvents";
+
+export type MaybeArray<T> = T | T[];
 
 type CommandMap = { [category: string]: Command[] };
 
-export type MaybeArray<T> = T | T[];
+interface CacheMiddlewareOptions {
+  model: string;
+  action: PrismaAction;
+  cacheSpecificDataset?: string[];
+  cacheExpireTimeInSeconds?: number;
+}
 
 export const numericEmojis = [
   "1⃣",
@@ -49,4 +58,41 @@ export const getCommandsByCategory = () => {
     category,
     commands,
   }));
+};
+
+export const cacheMiddleware = ({
+  model,
+  action,
+  cacheSpecificDataset: cacheSpecificQuerySet,
+  cacheExpireTimeInSeconds,
+}: CacheMiddlewareOptions): Middleware => async (params, next) => {
+  if (params.model !== model || action !== params.action) {
+    return next(params);
+  }
+
+  if (cacheSpecificQuerySet) {
+    const allKeysMatch = cacheSpecificQuerySet.every((key) =>
+      Object.keys(params.args.select).includes(key)
+    );
+
+    if (!allKeysMatch) {
+      return next(params);
+    }
+  }
+
+  let result;
+  const key = `${params.model}:${params.action}:${JSON.stringify(params.args)}`;
+
+  result = await redis.hgetall(key);
+
+  if (!Object.keys(result).length) {
+    result = await next(params);
+    await redis.hmset(key, result);
+
+    if (cacheExpireTimeInSeconds) {
+      redis.expire(key, cacheExpireTimeInSeconds);
+    }
+  }
+
+  return result;
 };

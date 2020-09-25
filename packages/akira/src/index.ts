@@ -2,16 +2,15 @@ import { ApolloServer } from "apollo-server-fastify";
 import { Client, Intents } from "discord.js";
 import "dotenv/config";
 import fastify from "fastify";
-import Redis from "ioredis";
 import "make-promises-safe";
+import { prisma } from "./clients";
 import { schema } from "./graphql/schema";
-import { prefixCached } from "./middleware/prefixCached";
-import { prisma } from "./prisma";
 import { logger } from "./util/logger";
 import {
   events,
   registerCommandsAndEvents,
 } from "./util/registerCommandsAndEvents";
+import { cacheMiddleware } from "./util/utilities";
 
 const main = async () => {
   const apolloServer = new ApolloServer({
@@ -41,9 +40,14 @@ const main = async () => {
     restRequestTimeout: 60000,
   });
 
-  const redis = new Redis(process.env.REDIS_URL);
-
-  prisma.$use(prefixCached(redis));
+  prisma.$use(
+    cacheMiddleware({
+      model: "GuildSettings",
+      action: "findOne",
+      cacheSpecificDataset: ["prefix"],
+      cacheExpireTimeInSeconds: 10,
+    })
+  );
 
   events.forEach(({ eventName, emitOnce, run }) =>
     client[emitOnce ? "once" : "on"](eventName!, (...args) =>
