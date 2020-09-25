@@ -12,6 +12,7 @@ type GuildSettings {
   action: String!
   id: String!
   prefix: String!
+  updatedAt: DateTime!
   updatedBy: String!
 }
 

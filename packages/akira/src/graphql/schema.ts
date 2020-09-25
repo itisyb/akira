@@ -11,6 +11,7 @@ const GuildSettings = objectType({
     t.model.prefix();
     t.model.updatedBy();
     t.model.action();
+    t.model.updatedAt();
   },
 });
 

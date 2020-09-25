@@ -81,6 +81,7 @@ export interface NexusGenFieldTypes {
     action: string; // String!
     id: string; // String!
     prefix: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
     updatedBy: string; // String!
   }
   Mutation: { // field return type
