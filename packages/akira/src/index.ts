@@ -1,10 +1,7 @@
-import { ApolloServer } from "apollo-server-fastify";
-import { Client, Intents } from "discord.js";
 import "dotenv/config";
-import fastify from "fastify";
 import "make-promises-safe";
-import { prisma } from "./clients";
-import { schema } from "./graphql/schema";
+import { client, prisma } from "./clients";
+import { apolloServer, server } from "./servers";
 import { logger } from "./util/logger";
 import {
   events,
@@ -13,14 +10,6 @@ import {
 import { cacheMiddleware } from "./util/utilities";
 
 const main = async () => {
-  const apolloServer = new ApolloServer({
-    schema,
-    context: { prisma },
-    tracing: process.env.NODE_ENV === "development",
-  });
-
-  const server = fastify({ logger: true });
-
   server.register(apolloServer.createHandler());
 
   await registerCommandsAndEvents({
@@ -28,17 +17,11 @@ const main = async () => {
     commandDir: `${__dirname}/commands/**/*{.js,.ts}`,
   });
 
-  const intents = new Intents(Intents.ALL).remove([
-    "DIRECT_MESSAGE_TYPING",
-    "GUILD_MESSAGE_TYPING",
-  ]);
-
-  const client = new Client({
-    disableMentions: "all",
-    ws: { intents },
-    partials: ["MESSAGE", "CHANNEL", "REACTION"],
-    restRequestTimeout: 60000,
-  });
+  events.forEach(({ eventName, emitOnce, run }) =>
+    client[emitOnce ? "once" : "on"](eventName!, (...args) =>
+      run(...args, client, prisma)
+    )
+  );
 
   prisma.$use(
     cacheMiddleware({
@@ -47,12 +30,6 @@ const main = async () => {
       cacheSpecificDataset: ["prefix"],
       cacheExpireTimeInSeconds: 10,
     })
-  );
-
-  events.forEach(({ eventName, emitOnce, run }) =>
-    client[emitOnce ? "once" : "on"](eventName!, (...args) =>
-      run(...args, client, prisma)
-    )
   );
 
   server.listen(4000, (err, address) => {
