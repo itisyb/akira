@@ -24,7 +24,7 @@ export const command: Command<string[]> = {
   ],
   userPermissions: ["EMBED_LINKS", "ADD_REACTIONS"],
   validateArgs: (args) => args.join(" ").split(" | "),
-  async execute(message, [question, ...answers], db) {
+  async execute(message, [question, ...answers], prisma) {
     if (answers.length < 2 || answers.length > 10) {
       return message.reply(
         "please provide at least 2 possible answers with a maximum of 10"
@@ -84,7 +84,7 @@ export const command: Command<string[]> = {
       await pollMessage.edit({ embed });
     }
 
-    return db.question.create({
+    return prisma.question.create({
       data: {
         id: pollMessage.id,
         authorId: message.author.id,

@@ -14,7 +14,7 @@ const formatPermission = (permissionString: PermissionString) => {
 };
 
 export const event: Event<"message"> = {
-  run: async (message, client, db) => {
+  run: async (message, client, prisma) => {
     const { author, guild, channel, content } = message;
 
     if (author.bot || !guild?.available || !(channel instanceof TextChannel)) {
@@ -27,7 +27,7 @@ export const event: Event<"message"> = {
       return;
     }
 
-    const { prefix } = (await db.guildSettings.findOne({
+    const { prefix } = (await prisma.guildSettings.findOne({
       select: { prefix: true },
       where: { id: guild.id },
     })) ?? { prefix: process.env.PREFIX };
@@ -92,9 +92,9 @@ export const event: Event<"message"> = {
         );
       }
 
-      return command.execute(message, validatedArgs, db);
+      return command.execute(message, validatedArgs, prisma);
     }
 
-    return command.execute(message, args, db);
+    return command.execute(message, args, prisma);
   },
 };

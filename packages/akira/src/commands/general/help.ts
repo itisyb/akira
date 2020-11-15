@@ -15,8 +15,8 @@ export const command: Command<string | undefined> = {
   acceptsArgs: true,
   requiresArgs: false,
   validateArgs: (args) => args[0],
-  async execute(message, commandName, db) {
-    const { prefix } = (await db.guildSettings.findOne({
+  async execute(message, commandName, prisma) {
+    const { prefix } = (await prisma.guildSettings.findOne({
       select: { prefix: true },
       where: { id: message.guild!.id },
     })) ?? { prefix: process.env.PREFIX };

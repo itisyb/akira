@@ -8,8 +8,8 @@ export const command: Command<string | undefined> = {
   requiresArgs: false,
   userPermissions: ["MANAGE_GUILD"],
   validateArgs: (args) => args[0],
-  async execute(message, newPrefix, db) {
-    const { prefix } = (await db.guildSettings.findOne({
+  async execute(message, newPrefix, prisma) {
+    const { prefix } = (await prisma.guildSettings.findOne({
       select: { prefix: true },
       where: { id: message.guild!.id },
     })) ?? { prefix: process.env.PREFIX };
@@ -24,7 +24,7 @@ export const command: Command<string | undefined> = {
       );
     }
 
-    await db.guildSettings.upsert({
+    await prisma.guildSettings.upsert({
       where: { id: message.guild!.id },
       create: {
         id: message.guild!.id,

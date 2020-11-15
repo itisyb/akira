@@ -3,7 +3,7 @@ import { Event } from "../util/registerCommandsAndEvents";
 import { numericEmojis } from "../util/utilities";
 
 export const event: Event<"messageReactionAdd"> = {
-  run: async (reaction, user, _client, db) => {
+  run: async (reaction, user, _client, prisma) => {
     if (user.bot) {
       return;
     }
@@ -18,12 +18,12 @@ export const event: Event<"messageReactionAdd"> = {
     const embed = embeds.length ? embeds[0] : undefined;
 
     if (numericEmojiIdx >= 0 && embed?.footer?.text?.includes("poll")) {
-      const question = await db.question.findOne({
+      const question = await prisma.question.findOne({
         where: { id: reaction.message.id },
       });
 
       if (question) {
-        await db.answer.upsert({
+        await prisma.answer.upsert({
           where: {
             answer_user_id_question_id_key: {
               questionId: question.id,
@@ -45,7 +45,7 @@ export const event: Event<"messageReactionAdd"> = {
         if (question.isAnonymous) {
           await reaction.users.remove(user.id);
 
-          const count = await db.answer.count({
+          const count = await prisma.answer.count({
             where: { questionId: question.id },
           });
 
@@ -76,7 +76,7 @@ export const event: Event<"messageReactionAdd"> = {
     if (reaction.emoji.name === "✅" && embed?.footer?.text?.includes("poll")) {
       await reaction.users.remove(user.id);
 
-      const question = await db.question.findOne({
+      const question = await prisma.question.findOne({
         where: { id: reaction.message.id },
         include: { answers: true },
       });
@@ -99,7 +99,7 @@ export const event: Event<"messageReactionAdd"> = {
 
         await reaction.message.edit(embed);
 
-        await db.question.delete({ where: { id: question.id } });
+        await prisma.question.delete({ where: { id: question.id } });
       }
     }
     // End

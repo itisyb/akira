@@ -29,7 +29,11 @@ export type Command<T = void> = {
   aliases?: string[];
   clientPermissions?: PermissionResolvable[];
   userPermissions?: PermissionResolvable[];
-  execute(message: Message, args: T, db: PrismaClient): MaybePromise<unknown>;
+  execute(
+    message: Message,
+    args: T,
+    prisma: PrismaClient
+  ): MaybePromise<unknown>;
 } & (T extends void ? {} : CommandWithArgsProps<T>);
 
 interface Example {
