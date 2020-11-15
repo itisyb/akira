@@ -78,7 +78,9 @@ export const command: Command<string[]> = {
 
     await reply.delete();
 
-    if (reply.content.toLowerCase() === "y") {
+    const isAnonymous = reply.content.toLowerCase() === "y";
+
+    if (isAnonymous) {
       embed.description = `${embed.description}\n\n${anonymousPollPhrase}`;
 
       await pollMessage.edit({ embed });
@@ -90,7 +92,7 @@ export const command: Command<string[]> = {
         authorId: message.author.id,
         question,
         possibleAnswers: { set: answers },
-        isAnonymous: reply.content.toLowerCase() === "y",
+        isAnonymous,
       },
     });
   },
