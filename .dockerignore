@@ -1,0 +1,6 @@
+*
+!./locales
+!./prisma
+!./src
+!./package*.json
+!./tsconfig.json
