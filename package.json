@@ -12,7 +12,7 @@
     "url": "git+https://github.com/pandaniell/akira.git"
   },
   "license": "MIT",
-  "author": "Daniell Wijdenbosch <daniell.wdb@icloud.com>",
+  "author": "pandaniell <daniell.wdb@icloud.com>",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
