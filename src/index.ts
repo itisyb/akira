@@ -16,7 +16,7 @@ const main = async () => {
     },
   })
 
-  const prismaClient = new PrismaClient({
+  const prisma = new PrismaClient({
     log: __DEV__ ? ["query"] : ["info", "warn"],
   })
 
@@ -29,7 +29,7 @@ const main = async () => {
 
   events.forEach(({ eventName, listenOnce, run }) => {
     client[listenOnce ? "once" : "on"](eventName, (...args) =>
-      run(...args, client, commands, prismaClient)
+      run(...args, client, commands, prisma)
     )
   })
 
