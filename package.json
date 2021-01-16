@@ -16,7 +16,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "gen-env-types": "npx gen-env-types .env -o @types/env.d.ts -e .",
+    "gen-env-types": "gen-env-types .env -o @types/env.d.ts -e .",
     "postinstall": "husky install",
     "start": "NODE_ENV=development nodemon src/index.ts | pino-pretty"
   },
@@ -75,6 +75,7 @@
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.0",
+    "gen-env-types": "^1.0.4",
     "husky": "^5.0.6",
     "lint-staged": "^10.5.3",
     "nodemon": "^2.0.6",
