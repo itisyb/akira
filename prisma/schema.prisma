@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Guild {
+  id        String   @id
+  prefix    String   @default(value: "!a")
+  language  Language @default(ENGLISH)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "guilds")
+}
+
+enum Language {
+  ENGLISH  @map(name: "en")
+  DUTCH    @map(name: "nl")
+}
