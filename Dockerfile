@@ -1,28 +1,24 @@
-FROM node:14.0.0 AS base
-WORKDIR /usr/src/app
+FROM node:15.0.0 AS base
+WORKDIR /usr/src/akira
 
 FROM base as builder
-COPY ./lerna.json .
-COPY ./package.json .
+COPY ./locales ./locales
+COPY ./prisma ./prisma
+COPY ./src ./src
+COPY ./package*.json ./
 COPY ./tsconfig.json .
-COPY ./yarn.lock .
-COPY ./packages/akira/prisma ./packages/akira/prisma
-COPY ./packages/akira/src ./packages/akira/src
-COPY ./packages/akira/types ./packages/akira/types
-COPY ./packages/akira/package*.json ./packages/akira/
-COPY ./packages/akira/tsconfig.json ./packages/akira
-RUN yarn install --frozen-lockfile
-RUN yarn build
+RUN npm ci --ignore-scripts
+RUN npx --no-install prisma generate
+RUN npm run build
 
 FROM builder as migrate
-RUN yarn workspace akira prisma migrate up --experimental
+RUN npx --no-install prisma migrate deploy --preview-feature
 
-FROM base AS app
-COPY --from=builder /usr/src/app/yarn.lock .
-COPY --from=builder /usr/src/app/packages/akira/dist ./dist
-COPY --from=builder /usr/src/app/packages/akira/prisma ./prisma
-COPY --from=builder /usr/src/app/packages/akira/package.json .
-RUN yarn install --production
+FROM base AS akira
+COPY --from=builder /usr/src/akira/dist ./dist
+COPY --from=builder /usr/src/akira/locales ./locales
+COPY --from=builder /usr/src/akira/package*.json .
+RUN npm i --only=prod --ignore-scripts
 USER node
 ENV NODE_ENV=production
 EXPOSE 4000

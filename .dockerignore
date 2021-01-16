@@ -1,11 +1,6 @@
 *
-!./lerna.json
-!./package.json
+!./locales
+!./prisma
+!./src
+!./package*.json
 !./tsconfig.json
-!./yarn.lock
-!./packages/akira/prisma
-!./packages/akira/src
-!./packages/akira/types
-!./packages/akira/package.json
-!./packages/akira/package-lock.json
-!./packages/akira/tsconfig.json
