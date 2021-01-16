@@ -5,7 +5,7 @@ FROM base as builder
 COPY ./locales ./locales
 COPY ./prisma ./prisma
 COPY ./src ./src
-COPY ./package*.json .
+COPY ./package*.json ./
 COPY ./tsconfig.json .
 RUN npm ci --ignore-scripts
 RUN npx --no-install prisma generate
