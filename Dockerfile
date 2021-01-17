@@ -2,6 +2,7 @@ FROM node:15.0.0 AS base
 WORKDIR /usr/src/akira
 
 FROM base as builder
+COPY ./@types ./@types
 COPY ./locales ./locales
 COPY ./prisma ./prisma
 COPY ./src ./src
