@@ -68,9 +68,13 @@ const main = async () => {
     tracing: __DEV__,
   })
 
-  fastifyPassport.registerUserSerializer<Profile, Profile>(async user => user)
+  fastifyPassport.registerUserSerializer<Profile, Profile>(
+    async profile => profile
+  )
 
-  fastifyPassport.registerUserDeserializer<Profile, Profile>(async user => user)
+  fastifyPassport.registerUserDeserializer<Profile, Profile>(
+    async profile => profile
+  )
 
   fastifyPassport.use(
     new Strategy(
