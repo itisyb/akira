@@ -18,6 +18,7 @@
     "build": "tsc",
     "gen-env-types": "gen-env-types .env -o @types/env.d.ts -e .",
     "postinstall": "husky install",
+    "migrate": "DATABASE_URL=$(heroku config:get DATABASE_URL -a akira-bot-discord) npx --no-install prisma migrate deploy --preview-feature",
     "start": "NODE_ENV=development nodemon src/index.ts | pino-pretty"
   },
   "commitlint": {
