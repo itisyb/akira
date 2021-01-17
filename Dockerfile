@@ -22,7 +22,6 @@ COPY --from=builder /usr/src/akira/package*.json ./
 RUN chmod +x ./entrypoint.sh
 RUN npm i --only=prod --ignore-scripts
 RUN npx --no-install prisma generate
-RUN npm i pino-elasticsearch -g
 USER node
 ENV NODE_ENV=production
 ENTRYPOINT ["./entrypoint.sh"]
