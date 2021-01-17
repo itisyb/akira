@@ -86,7 +86,7 @@ run() {
 
   # Write git tag and commit package changes
   git add package.json
-  git commit -m "Bump version to \"$NEXT_VERSION\""
+  git commit -m "chore: bump version to $NEXT_VERSION"
   git tag $NEXT_VERSION
 
   # Prompt for push confirmation
