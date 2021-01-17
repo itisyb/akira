@@ -1,13 +1,21 @@
 import "dotenv/config"
+import "make-promises-safe"
+import fastifySession from "@mgcrea/fastify-session"
+import RedisStore from "@mgcrea/fastify-session-redis-store"
 import { PrismaClient } from "@prisma/client"
 import { ApolloServer } from "apollo-server-fastify"
 import { Client, Intents } from "discord.js"
 import fastify from "fastify"
+import fastifyCookie from "fastify-cookie"
+import fastifyCors from "fastify-cors"
+import fastifyPassport from "fastify-passport"
 import i18next from "i18next"
 import Backend from "i18next-fs-backend"
+import Redis from "ioredis"
 import type { Context } from "nexus-plugin-prisma/dist/utils"
+import { Strategy, Profile } from "passport-discord"
 import { join } from "path"
-import { __DEV__ } from "./constants"
+import { COOKIE_NAME, SESSION_TTL, __DEV__ } from "./constants"
 import { schema } from "./schema"
 import { loadCommandsAndEvents } from "./utilities/loadCommandsAndEvents"
 import { logger } from "./utilities/logger"
@@ -60,8 +68,64 @@ const main = async () => {
     tracing: __DEV__,
   })
 
+  fastifyPassport.registerUserSerializer<Profile, Profile>(async user => user)
+
+  fastifyPassport.registerUserDeserializer<Profile, Profile>(async user => user)
+
+  fastifyPassport.use(
+    new Strategy(
+      {
+        clientID: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        callbackURL: `${process.env.SERVER_URL}/auth/discord/callback`,
+        scope: ["identify", "guilds"],
+      },
+      async (_accessToken, _refreshToken, profile, done) => {
+        return done(undefined, profile)
+      }
+    )
+  )
+
   fastify({ logger })
+    .register(fastifyCors, {
+      origin: process.env.CORS_ORIGIN,
+      credentials: true,
+    })
+    .register(fastifyCookie)
+    .register(fastifySession, {
+      cookieName: COOKIE_NAME,
+      store: new RedisStore({
+        client: new Redis(process.env.REDIS_URL),
+        ttl: SESSION_TTL,
+      }),
+      cookie: {
+        domain: process.env.COOKIE_DOMAIN,
+        httpOnly: true,
+        maxAge: SESSION_TTL,
+        sameSite: "lax",
+        secure: true,
+      },
+      saveUninitialized: false,
+      secret: process.env.SESSION_SECRET,
+    })
+    .register(fastifyPassport.initialize())
+    .register(fastifyPassport.secureSession())
     .register(apolloServer.createHandler({ cors: false }))
+    .get(
+      "/auth/discord",
+      {
+        preValidation: fastifyPassport.authenticate("discord"),
+      },
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      async () => {}
+    )
+    .get(
+      "/auth/discord/callback",
+      {
+        preValidation: fastifyPassport.authenticate("discord"),
+      },
+      async (_request, reply) => reply.send("You may now close this window.")
+    )
     .listen(process.env.PORT ?? 4000)
 
   client.login(process.env.TOKEN)
