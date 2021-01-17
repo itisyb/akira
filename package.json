@@ -15,11 +15,12 @@
   "author": "pandaniell <daniell.wdb@icloud.com>",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf dist && NODE_ENV=development npm run nexus:reflect && tsc",
     "gen-env-types": "gen-env-types .env -o @types/env.d.ts -e .",
     "postinstall": "husky install",
     "migrate": "DATABASE_URL=$(heroku config:get DATABASE_URL -a akira-bot-discord) prisma migrate deploy --preview-feature",
     "migrate:dev": "prisma migrate dev --create-only --preview-feature",
+    "nexus:reflect": "SHOULD_EXIT_AFTER_GENERATE_ARTIFACTS=true ts-node --transpile-only src/index.ts",
     "start": "NODE_ENV=development nodemon --transpile-only src/index.ts | pino-pretty"
   },
   "commitlint": {
@@ -58,11 +59,15 @@
   "dependencies": {
     "@elastic/ecs-pino-format": "^0.2.0",
     "@prisma/client": "^2.14.0",
+    "apollo-server-fastify": "^3.0.0-alpha.3",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
+    "fastify": "^3.10.1",
     "glob": "^7.1.6",
     "i18next": "^19.8.4",
     "i18next-fs-backend": "^1.0.7",
+    "nexus": "^1.0.0",
+    "nexus-plugin-prisma": "^0.28.0",
     "pino": "^6.9.0",
     "pino-elasticsearch": "^5.4.0",
     "tslib": "^2.1.0"
@@ -86,6 +91,7 @@
     "nodemon": "^2.0.6",
     "pino-pretty": "^4.3.0",
     "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }
