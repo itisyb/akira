@@ -16,6 +16,7 @@ export const event: Event<"message"> = {
     if (!clientPermissions?.has("SEND_MESSAGES")) {
       return
     }
+
     const config = (await prisma.guild.findUnique({
       where: {
         id: guild.id,
@@ -25,8 +26,8 @@ export const event: Event<"message"> = {
         language: true,
       },
     })) ?? {
-      language: Language.ENGLISH,
       prefix: "!a",
+      language: Language.ENGLISH,
     }
 
     const [commandName, ...args] = content

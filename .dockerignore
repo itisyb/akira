@@ -2,5 +2,6 @@
 !./locales
 !./prisma
 !./src
+!./entrypoint.sh
 !./package*.json
 !./tsconfig.json
