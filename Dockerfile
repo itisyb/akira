@@ -13,7 +13,7 @@ RUN npx --no-install prisma generate
 RUN npm run build
 
 FROM builder as migrate
-ENV DATABASE_URL="$(heroku config:get DATABASE_URL -a akira-bot-discord)"
+ENV DATABASE_URL="${heroku config:get DATABASE_URL -a akira-bot-discord}"
 RUN npx --no-install prisma migrate deploy --preview-feature
 
 FROM base AS akira
