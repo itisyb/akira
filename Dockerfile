@@ -12,9 +12,6 @@ RUN npm ci --ignore-scripts
 RUN npx --no-install prisma generate
 RUN npm run build
 
-FROM builder as migrate
-RUN npm run migrate
-
 FROM base AS akira
 COPY --from=builder /usr/src/akira/dist ./dist
 COPY --from=builder /usr/src/akira/locales ./locales
