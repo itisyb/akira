@@ -79,22 +79,22 @@ run() {
   local NEXT_VERSION=$(bump $PACKAGE_VERSION $BUMP_ARGS)
 
   # Prompt for bump confirmation
-  prompt_confirmation "Bump from $PACKAGE_VERSION to $NEXT_VERSION?"
+  prompt_confirmation "Bump from $PACKAGE_VERSION to v$NEXT_VERSION?"
 
   # Override package version
   write_package_version $NEXT_VERSION
 
   # Write git tag and commit package changes
   git add package.json
-  git commit -m "chore: bump version to $NEXT_VERSION"
-  git tag $NEXT_VERSION
+  git commit -m "chore: bump version to v$NEXT_VERSION"
+  git tag "v$NEXT_VERSION"
 
   # Prompt for push confirmation
   prompt_confirmation "Push the tag and commit to ${BRANCH_NAME}?"
 
   # Push branch and tag
   git push origin $BRANCH_NAME
-  git push origin $NEXT_VERSION
+  git push origin "v$NEXT_VERSION"
 }
 
 run $@
