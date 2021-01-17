@@ -63,6 +63,7 @@
     "glob": "^7.1.6",
     "i18next": "^19.8.4",
     "i18next-fs-backend": "^1.0.7",
+    "pino": "^6.9.0",
     "pino-elasticsearch": "^5.4.0",
     "tslib": "^2.1.0"
   },
@@ -83,7 +84,6 @@
     "husky": "^5.0.6",
     "lint-staged": "^10.5.3",
     "nodemon": "^2.0.6",
-    "pino": "^6.9.0",
     "pino-pretty": "^4.3.0",
     "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
