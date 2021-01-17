@@ -16,6 +16,7 @@ RUN npm run build
 FROM base AS akira
 COPY --from=builder /usr/src/akira/dist ./dist
 COPY --from=builder /usr/src/akira/locales ./locales
+COPY --from=builder /usr/src/akira/prisma ./prisma
 COPY --from=builder /usr/src/akira/entrypoint.sh .
 COPY --from=builder /usr/src/akira/package*.json ./
 RUN chmod +x ./entrypoint.sh
