@@ -1,6 +1,12 @@
 name: Node.js CI
 
-on: [push, pull_request]
+on: 
+  push:
+    branches-ignore:
+      - "v*.*.*"
+  pull_request:
+    branches:
+      - 'main'
 
 jobs:
   build:
