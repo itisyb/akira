@@ -14,5 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Build Docker image
-        run: docker build . --target builder -t pandaniell/akira
+      - name: Build Docker image for web
+        run: docker build -f dockerfiles/Dockerfile.web -t pandaniell/akira .
+      - name: Build Docker image for worker
+        run: docker build -f dockerfiles/Dockerfile.worker -t pandaniell/akira .
