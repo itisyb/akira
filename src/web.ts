@@ -92,7 +92,7 @@ const main = async () => {
       },
       async (_request, reply) => reply.send("You may now close this window.")
     )
-    .listen(process.env.PORT ?? 4000)
+    .listen(process.env.PORT ?? 4000, "0.0.0.0")
 }
 
 main()
