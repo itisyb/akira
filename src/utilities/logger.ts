@@ -8,7 +8,7 @@ ecsFormat()
 const streamToElastic = () => {
   return pinoElastic({
     consistency: "one",
-    node: process.env.SEARCHBOX_URL,
+    node: process.env.BONSAI_URL,
     "es-version": 7,
   })
 }
