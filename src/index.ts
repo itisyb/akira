@@ -9,6 +9,7 @@ import fastify from "fastify"
 import fastifyCookie from "fastify-cookie"
 import fastifyCors from "fastify-cors"
 import fastifyPassport from "fastify-passport"
+import { applyMiddleware } from "graphql-middleware"
 import i18next from "i18next"
 import Backend from "i18next-fs-backend"
 import Redis from "ioredis"
@@ -16,6 +17,7 @@ import type { Context } from "nexus-plugin-prisma/dist/utils"
 import { Strategy, Profile } from "passport-discord"
 import { join } from "path"
 import { COOKIE_NAME, SESSION_TTL, __DEV__ } from "./constants"
+import { permissions } from "./permissions"
 import { schema } from "./schema"
 import { loadCommandsAndEvents } from "./utilities/loadCommandsAndEvents"
 import { logger } from "./utilities/logger"
@@ -57,7 +59,7 @@ const main = async () => {
   })
 
   const apolloServer = new ApolloServer({
-    schema,
+    schema: applyMiddleware(schema, permissions),
     context: (request: Omit<Context, "prisma">) => ({ ...request, prisma }),
     playground: {
       // @TODO: customize playground options
