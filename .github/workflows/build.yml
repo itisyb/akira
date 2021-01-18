@@ -15,4 +15,4 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Build Docker image
-        run: docker build . --target builder -t pandaniell/akira
+        run: docker build -f worker/Dockerfile.worker . --target builder -t pandaniell/akira
