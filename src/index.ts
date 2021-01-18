@@ -34,6 +34,7 @@ const main = async () => {
   const intents = new Intents(Intents.ALL).remove([
     "DIRECT_MESSAGE_TYPING",
     "GUILD_MESSAGE_TYPING",
+    "GUILD_PRESENCES",
   ])
 
   const client = new Client({
