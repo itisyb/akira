@@ -65,7 +65,7 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "fastify": "^3.11.0",
-    "fastify-cookie": "^4.2.0",
+    "fastify-cookie": "^5.1.0",
     "fastify-cors": "^4.1.0",
     "fastify-passport": "^0.2.0",
     "glob": "^7.1.6",
