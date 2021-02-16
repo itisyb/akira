@@ -1,9 +1,11 @@
 import { Fragment } from "react"
-import { chakra, Heading } from "@chakra-ui/react"
 import Head from "next/head"
-import pkg from "../package.json"
+import styled from "styled-components"
 
-const Main = chakra("main")
+const Title = styled.h1`
+  font-size: 50px;
+  color: ${({ theme }) => theme.colors.primary};
+`
 
 const Home = () => (
   <Fragment>
@@ -14,9 +16,7 @@ const Home = () => (
         content="🤖 Akira is a multipurpose Discord bot."
       />
     </Head>
-    <Main>
-      <Heading>{pkg.name}</Heading>
-    </Main>
+    <Title>My page</Title>
   </Fragment>
 )
 
