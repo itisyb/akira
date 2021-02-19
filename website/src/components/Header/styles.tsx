@@ -1,19 +1,10 @@
 import styled, { css } from 'styled-components';
-import { fontFamily } from '../design/typography';
-import { darkTheme } from '../design/theme';
-import Header from '.';
+import { motion } from 'framer-motion';
 
-// export const Wrapper = styled.div`
-//     width: 100%;
-//     /* padding: 100px 20px 20px 20px; */
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-//     flex-direction: row;
-// `;
-
-export const Logo = styled.h2`
+export const Logo = styled(motion.div)`
     margin: 0;
+    height: 140px;
+    width: 140px;
     padding: 24px 0px;
     line-height: 2.5rem;
     font-size: 1.2em;
@@ -25,21 +16,34 @@ export const FlexNavContainer = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    /* padding: 16px 200px; */
-    /* margin-left: 200px; */
-    /* width: 100%; */
     position: relative;
-    margin: 0px 200px;
-    z-index: 99;
+    margin: 0px 20vw;
+    z-index: 199;
+    @media only screen and (min-width: 320px) and (max-width: 640px) {
+        margin: 0px 10vw;
+    }
 `;
 
-export const FLex = styled.div`
+export const IconBox = styled.div`
+    display: none;
+    justify-content: center;
+    align-items: center;
+    @media (max-width: 768px) {
+        display: flex;
+        justify-content: space-around;
+        flex-flow: column nowrap;
+    }
+`;
+
+export const FLexRight = styled.div`
     display: flex;
     align-items: center;
 
     justify-content: space-between;
-    flex-wrap: wrap;
     color: white;
+    @media (max-width: 768px) {
+        display: none;
+    }
 `;
 
 export const FlexHeading = styled.div`
@@ -50,7 +54,7 @@ export const FlexHeading = styled.div`
 export const Button = styled.button`
     border-radius: 8px;
     font-size: 1em;
-    font-weight: 600;
+    font-weight: 700;
     padding: 20px 25px;
     color: #1c0538;
     background-color: white;
@@ -60,44 +64,37 @@ export const Button = styled.button`
         transform: scale(1.02);
         background-color: #81ffe8;
     }
-    @media (min-width: 320px) {
-        font-size: 1.6em;
-        font-weight: 600;
-        padding: 10px 18px;
-    }
-    @media (min-width: 425px) {
-        font-size: 0.8em;
-        font-weight: 600;
+    @media (max-width: 425px) {
         padding: 16px 25px;
     }
-    @media (min-width: 800px) {
-        font-size: 1em;
-        font-weight: 600;
-        padding: 16px 20px;
+    @media (max-width: 800px) {
+        padding: 16px 0px;
     }
-    @media (min-width: 1024px) {
-        font-size: 1em;
-        font-weight: 600;
-        padding: 20px 25px;
+    @media (max-width: 1024px) {
+        padding: 15px 20px;
     }
 `;
 
 export const MenuItemText = styled.div`
     position: relative;
     z-index: 5;
-    font-size: 1em;
+    font-size: 1.2em;
     transition: all 0.4s;
+
     &:hover {
         cursor: pointer;
         color: #81ffe8;
     }
+    @media (max-width: 425px) {
+        font-size: 1em;
+    }
+    @media (max-width: 800px) {
+        font-size: 1em;
+    }
+    @media (max-width: 1024px) {
+        font-size: 1em;
+    }
 `;
-
-// export const FlexNavRight = styled.div`;
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-// `;
 
 export const MenuItem = styled.a`
     margin-right: 80px;

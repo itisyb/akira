@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import * as SC from './styles';
-
+import Logo from '../../../public/static/images/logo.png';
 interface IMenuItemProps {
     to: string;
     // children : string
@@ -11,24 +11,9 @@ const MenuItem: FC<IMenuItemProps> = ({ children, to }) => {
         <SC.MenuItem to={to} activeClassName="active" className={to === '/' ? 'disabled' : ''}>
             <SC.MenuItemText>{children}</SC.MenuItemText>
         </SC.MenuItem>
-
-        // <h3>
-        //     <a href={to}>{children}</a>
-        // </h3>
     );
 };
-// const MenuItem: FC<IMenuItemProps> = ({ children, to }) => {
-//     return (
-//       <SC.MenuItem
-//         to={to}
-//         activeClassName="active"
-//         className={to === "/" ? "disabled" : ""}
-//       >
-//         <SC.MenuItemText>{children}</SC.MenuItemText>
-//         <SC.MenuItemLine />
-//       </SC.MenuItem>
-//     )
-//   }
+
 const CloseIcon = () => (
     <svg width="24" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
         <title>Close</title>
@@ -53,23 +38,21 @@ const Header = (props) => {
     return (
         <SC.FlexNavContainer>
             <SC.FlexHeading>
-                <SC.Logo>
-                    <h2>AKira</h2>
+                <SC.Logo animate={{ y: [0, 5, 0, -5, 0] }} transition={{ duration: 3, loop: Infinity, ease: 'linear' }}>
+                    <img src="https://i.ibb.co/48HZKvs/logo.png" style={{ maxWidth: '100%', maxHeight: '100%' }} />
                 </SC.Logo>
             </SC.FlexHeading>
 
-            {/* <Box display={{ base: 'block', md: 'none' }} onClick={toggleMenu}>
-                {show ? <CloseIcon /> : <MenuIcon />}
-            </Box> */}
+            <SC.IconBox onClick={toggleMenu}>{show ? <CloseIcon /> : <MenuIcon />}</SC.IconBox>
 
             {/* <Box display={{ base: show ? 'block' : 'none', md: 'block' }} flexBasis={{ base: '100%', md: 'auto' }}> */}
-            <SC.FLex>
+            <SC.FLexRight>
                 <MenuItem to="/features">Features </MenuItem>
                 <MenuItem to="/pricing">Pricing </MenuItem>
                 <MenuItem to="/signup">
                     <SC.Button>Login with discord</SC.Button>
                 </MenuItem>
-            </SC.FLex>
+            </SC.FLexRight>
             {/* </Box> */}
         </SC.FlexNavContainer>
     );

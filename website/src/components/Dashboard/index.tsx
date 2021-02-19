@@ -1,15 +1,10 @@
-import { motion, useTransform, useViewportScroll } from 'framer-motion';
-import React from 'react';
-import styled from 'styled-components';
-import { Button } from '../Header/styles';
+import { useTransform, useViewportScroll } from 'framer-motion';
+import React, { useEffect } from 'react';
 import * as SC from './styles';
 
 const Dashboard = () => {
     const [ffLayer, setFfLayer] = React.useState(0);
     const { scrollYProgress } = useViewportScroll();
-    const [isShown, setIsShown] = React.useState(false);
-
-    const hide = useTransform(scrollYProgress, [0, 0.9, 1], ['flex', 'flex', 'none']);
     const opac = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1, 0]);
     scrollYProgress.onChange((x) => {
         setFfLayer(x > 0.4 ? -1 : 0);
@@ -29,16 +24,15 @@ const Dashboard = () => {
                     <SC.SubHeading2 />
                 </SC.NavLayerRight>
             </SC.NavContainer>
-            <LeftPanel isShown={isShown} />
-
-            <MiddlePanel isShown={isShown} setIsShown={setIsShown} />
-            <RightPanel isShown={isShown} />
-            <LeftPanelGlass isShown={isShown} />
+            <LeftPanel />
+            <MiddlePanel />
+            <RightPanel />
+            <LeftPanelGlass />
         </SC.DashboardStyle>
     );
 };
 
-const LeftPanel = (props) => {
+const LeftPanel = () => {
     const [ffLayer, setFfLayer] = React.useState(0);
     const { scrollYProgress } = useViewportScroll();
     const scaleAnim = useTransform(scrollYProgress, [0, 0.1, 0.4], [0, 0.8, 1]);
@@ -58,37 +52,33 @@ const LeftPanel = (props) => {
         >
             <SC.HeadingBig></SC.HeadingBig>
             <SC.HeadingBigMain></SC.HeadingBigMain>
-            {/* <div className={`headingBig ${props.isShown && 'gradient'}`}></div> */}
             <SC.HeadingBig></SC.HeadingBig>
             <SC.HeadingBig></SC.HeadingBig>
             <SC.HeadingBig></SC.HeadingBig>
             <SC.VoiceChannel>
                 <SC.HeadingSmall></SC.HeadingSmall>
-                {/* <div className={`headingSmall ${props.isShown && 'gradient'}`}></div> */}
-                <SC.Row1>
+                <SC.Row>
                     <SC.HeadingSmall />
-                    {/* <div className={`headingSmall ${props.isShown && 'gradient'}`}></div> */}
                     <SC.CircleSmall></SC.CircleSmall>
-                </SC.Row1>
-                <SC.Row2>
+                </SC.Row>
+                <SC.Row>
                     <SC.HeadingSmall></SC.HeadingSmall>
-                    {/* <div className={`headingSmall ${props.isShown && 'gradient'}`}></div> */}
                     <SC.CircleSmall></SC.CircleSmall>
                     <SC.CircleSmall></SC.CircleSmall>
-                </SC.Row2>
+                </SC.Row>
             </SC.VoiceChannel>
             <SC.VoiceChannel2></SC.VoiceChannel2>
             <SC.VoiceChannel2></SC.VoiceChannel2>
             <SC.VoiceChannel2></SC.VoiceChannel2>
-            <SC.Row3>
+            <SC.Row mt="-24px">
                 <SC.VoiceChannelActive></SC.VoiceChannelActive>
                 <SC.CircleActive></SC.CircleActive>
-            </SC.Row3>
+            </SC.Row>
         </SC.LeftPanelStyle>
     );
 };
 
-const LeftPanelGlass = (props) => {
+const LeftPanelGlass = () => {
     const [ffLayer, setFfLayer] = React.useState(0);
     const { scrollYProgress } = useViewportScroll();
     const scaleAnim = useTransform(scrollYProgress, [0, 0.1, 0.4], [0, 0.2, 1]);
@@ -107,7 +97,6 @@ const LeftPanelGlass = (props) => {
             }}
         >
             <SC.CircleChannel />
-            {/* <div className={`circle1 ${props.isShown && 'gradient'}`}> */}
             <SC.CircleChannelMain>
                 <img
                     src="https://i.ibb.co/WFTHSfz/akira.png"
@@ -115,7 +104,6 @@ const LeftPanelGlass = (props) => {
                     style={{ maxHeight: '100%', maxWidth: '100%' }}
                 />
             </SC.CircleChannelMain>
-            {/* </div> */}
             <SC.CircleChannel />
             <SC.CircleChannel />
             <SC.CircleChannel />
@@ -124,11 +112,12 @@ const LeftPanelGlass = (props) => {
     );
 };
 
-const MiddlePanel = (props) => {
+const MiddlePanel = () => {
     const [ffLayer, setFfLayer] = React.useState(0);
     const { scrollYProgress } = useViewportScroll();
     const scaleAnim = useTransform(scrollYProgress, [0, 0.1, 0.4], [0, 0.2, 1]);
     const yPosAnim = useTransform(scrollYProgress, [0, 0.5], [-400, 0]);
+    const opac = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
 
     scrollYProgress.onChange((x) => {
         setFfLayer(x > 0.4 ? -1 : 0);
@@ -150,18 +139,19 @@ const MiddlePanel = (props) => {
                 </div>
             </SC.ProfileSkeleton>
             <SC.Box>
-                <SC.ProfileSkeleton>
+                <SC.ProfileSkeleton id="profile">
                     <div className="profile-square "></div>
                     <div className="data-skeleton">
                         <SC.Text2></SC.Text2>
                         <SC.Text2></SC.Text2>
-                        {/* <div className={`text2 ${props.isShown && 'gradient'}`}></div> */}
                     </div>
+
                     <SC.JoinButton
                         bg="#56EEAE"
-                        // className={`button__color ${props.isShown && 'gradient'}`}
-                        onMouseEnter={() => props.setIsShown(true)}
-                        onMouseLeave={() => props.setIsShown(false)}
+                        style={{ opacity: opac }}
+                        id="button"
+                        // onMouseEnter={() => props.setIsShown(true)}
+                        // onMouseLeave={() => props.setIsShown(false)}
                     >
                         Join
                     </SC.JoinButton>
@@ -194,7 +184,6 @@ const MiddlePanel = (props) => {
             <SC.ProfileSkeleton>
                 <SC.ProfileCircle></SC.ProfileCircle>
                 <div className="data-skeleton">
-                    <SC.Text></SC.Text>
                     <SC.Text></SC.Text>
                 </div>
             </SC.ProfileSkeleton>
@@ -235,7 +224,6 @@ const RightPanel = (props) => {
                 rotateZ: zRotAnim,
             }}
         >
-            {console.log(scaleAnim)}
             <SC.HeadingSmallRight />
             <ProfileSkeleton isShown1={props.isShown} />
             <ProfileSkeleton isShown2={props.isShown} />

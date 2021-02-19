@@ -31,7 +31,7 @@ export const NavLayerLeft = styled(motion.div)`
 `;
 
 export const Circle = styled(motion.div)`
-    background-color: #1e0f39;
+    background-color: ${(props) => props.theme.main.dashboardDark};
     width: 24px;
     height: 24px;
     border-radius: 20%;
@@ -42,7 +42,7 @@ export const Circle = styled(motion.div)`
     // margin-right: 126px;
 `;
 export const Heading = styled(motion.div)`
-    background-color: #1e0f39;
+    background-color: ${(props) => props.theme.main.dashboardDark};
     width: 132px;
     height: 24px;
     border-radius: 20px;
@@ -59,7 +59,7 @@ export const NavLayerRight = styled(motion.div)`
 `;
 
 export const Circle2 = styled(motion.div)`
-    background-color: #1e0f39;
+    background-color: ${(props) => props.theme.main.dashboardDark};
     width: 24px;
     height: 24px;
     margin-right: 16px;
@@ -71,7 +71,7 @@ export const Circle2 = styled(motion.div)`
 `;
 
 export const Heading2 = styled(motion.div)`
-    background-color: #1e0f39;
+    background-color: ${(props) => props.theme.main.dashboardDark};
     width: 240px;
     height: 24px;
     border-radius: 20px;
@@ -83,7 +83,7 @@ export const Heading2 = styled(motion.div)`
 `;
 
 export const SubHeading2 = styled(motion.div)`
-    background-color: #1e0f39;
+    background-color: ${(props) => props.theme.main.dashboardDark};
     width: 240px;
     height: 14px;
     border-radius: 20px;
@@ -105,7 +105,7 @@ export const LeftPanelStyle = styled(motion.div)`
 `;
 
 export const HeadingBig = styled(motion.div)`
-    background-color: #1e0f39;
+    background-color: ${(props) => props.theme.main.dashboardDark};
     width: 114px;
     height: 20px;
     margin: 24px;
@@ -125,22 +125,19 @@ export const HeadingBigMain = styled(HeadingBig)`
     background-color: white;
     opacity: 0.8;
 `;
-export const HeadingSmall2 = styled(motion.div)`
+export const HeadingSmall = styled(motion.div)`
     background-color: white;
     width: 72px;
     height: 12px;
     border-radius: 20px;
     margin: 16px 24px;
-    &.gradient {
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-        background-size: 400% 400%;
-        animation: gradient 2s ease infinite;
-        -webkit-animation: gradient 2s ease infinite;
+    &:nth-child(1) {
+        width: 90px;
     }
 `;
 
 export const CircleSmall = styled(motion.div)`
-    background-color: #1e0f39;
+    background-color: ${(props) => props.theme.main.dashboardDark};
     width: 24px;
     height: 24px;
     margin-right: 24px;
@@ -151,34 +148,16 @@ export const VoiceChannel = styled(motion.div)`
     flex-direction: column;
 `;
 
-export const Row1 = styled(motion.div)`
+export const Row = styled(motion.div)`
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-`;
-
-export const HeadingSmall = styled(motion.div)`
-    background-color: white;
-    opacity: 0.8;
-    width: 172px;
-    height: 12px;
-    border-radius: 20px;
-    margin: 16px 24px;
-    &:nth-child(1) {
-        width: 90px;
-    }
-`;
-
-export const Row2 = styled(motion.div)`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    margin-top: ${(props) => props.mt || 'null'};
 `;
 
 export const VoiceChannel2 = styled(motion.div)`
-    background-color: #1e0f39;
+    background-color: ${(props) => props.theme.main.dashboardDark};
     width: 124px;
     height: 12px;
     border-radius: 20px;
@@ -189,48 +168,20 @@ export const VoiceChannel2 = styled(motion.div)`
     -o-border-radius: 20px;
 `;
 
-export const Row3 = styled(motion.div)`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: -24px;
-`;
-export const VoiceChannelActive = styled(motion.div)`
+export const VoiceChannelActive = styled(VoiceChannel2)`
     background-color: #56eeae;
-    width: 124px;
-    height: 12px;
-    border-radius: 20px;
-    margin: 24px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
-    &.gradient {
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-        background-size: 400% 400%;
-        animation: gradient 2s ease infinite;
-        -webkit-animation: gradient 2s ease infinite;
-    }
 `;
 
-export const CircleActive = styled(motion.div)`
+export const CircleActive = styled.div`
     background-color: #56eeae;
     width: 24px;
     height: 24px;
-    border-radius: 20%;
     margin-right: 24px;
+    border-radius: 20%;
     -webkit-border-radius: 20%;
     -moz-border-radius: 20%;
     -ms-border-radius: 20%;
     -o-border-radius: 20%;
-    //margin-right: 126px;
-    &.gradient {
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-        background-size: 400% 400%;
-        animation: gradient 2s ease infinite;
-        -webkit-animation: gradient 2s ease infinite;
-    }
 `;
 
 // LeftpanelGlass
@@ -254,7 +205,7 @@ export const LeftPanelGlassStyle = styled(motion.div)`
 `;
 
 export const CircleChannel = styled(motion.div)`
-    background-color: #1e0f39;
+    background-color: ${(props) => props.theme.main.dashboardDark};
     width: 42px;
     height: 42px;
     border-radius: 50%;
@@ -291,7 +242,7 @@ export const MiddleStyle = styled(motion.div)`
     height: 564px;
     background-color: transparent;
     position: absolute;
-    top: 40px;
+    top: 20px;
     left: 234px;
     z-index: 3;
 `;
@@ -324,24 +275,16 @@ export const Text = styled(motion.div)`
     }
 `;
 
-export const Text2 = styled(motion.div)`
+export const Text2 = styled(Text)`
     background-image: linear-gradient(to right, #1e0f39, rgba(255, 255, 255, 0.5));
     width: 160px;
-    height: 10px;
     margin: 8px 0;
     margin-right: 32px;
-    border-radius: 20px;
-    &:nth-of-type(2n + 1) {
-        width: 148px;
-    }
 `;
 
-export const Text3 = styled(motion.div)`
-    background-image: linear-gradient(to right, #1e0f39, rgba(15, 30, 57, 0.5));
+export const Text3 = styled(Text)`
     width: 80px;
     height: 8px;
-    margin: 4px 0;
-    border-radius: 20px;
     &:nth-of-type(2n + 1) {
         width: 48px;
     }
@@ -363,11 +306,15 @@ export const Box = styled(motion.div)`
     -o-border-radius: 20px;
 `;
 
-export const JoinButton = styled(Button)`
+export const JoinButton = styled.button`
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
     padding: 15px 40px;
     background-color: ${(props) => props.bg};
     color: white;
-    font-size: 600;
+    font-weight: 700;
+    transition: visibility 0s, opacity 0.5s linear;
 `;
 
 //rightpanel
@@ -389,7 +336,7 @@ export const RightPanelStyle = styled(motion.div)`
 `;
 
 export const HeadingSmallRight = styled(motion.div)`
-    background-color: #1e0f39;
+    background-color: ${(props) => props.theme.main.dashboardDark};
     opacity: 0.8;
     width: 78px;
     height: 10px;
@@ -419,6 +366,7 @@ export const ProfileSkeletonRight = styled(ProfileSkeleton)`
 
 export const DashboardStyle = styled(motion.div)`
     position: fixed;
+
     margin-top: 16vh;
     width: 984px;
     max-width: 984px;
@@ -430,6 +378,7 @@ export const DashboardStyle = styled(motion.div)`
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom: none;
     border-radius: 16px;
+    z-index: 99;
     &:hover {
         ${HeadingBigMain}, ${HeadingSmall}, ${CircleChannelMain}, ${VoiceChannelActive}, ${CircleActive}, ${Text2}, ${JoinButton}, ${HeadingSmallRight}, ${Text3} {
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
@@ -450,12 +399,19 @@ export const DashboardStyle = styled(motion.div)`
         }
     }
     /* display: hide; */
-    @media (max-width: 425px) {
-        transform: scale(0.4);
+    @media only screen and (min-width: 320px) and (max-width: 425px) {
+        display: none;
     }
-    @media (max-width: 800px) {
-        transform: scale(0.6);
+    @media only screen and (min-width: 425px) and (max-width: 540px) {
+        transform: scale(0.45);
+    }
+
+    @media only screen and (min-width: 540px) and (max-width: 620px) {
+        transform: scale(0.55);
         /* display: none; */
+    }
+    @media only screen and (min-width: 620px) and (max-width: 800px) {
+        transform: scale(0.65);
     }
     @media (min-width: 800px) {
         transform: scale(0.8);

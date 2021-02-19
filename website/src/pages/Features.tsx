@@ -10,20 +10,11 @@ const FeaturesWrapper = styled(motion.div)`
     flex-wrap: wrap;
     padding: 0 20vw;
     height: 100vh;
-    @media (max-width: 800px) {
-        padding: 0px;
-    }
-    @media (max-width: 1024px) {
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: center;
-        padding: 0 80px;
-    }
 `;
 const FeatureTextContainer = styled.div`
     width: 50%;
     padding-right: 4vw;
-    @media (max-width: 800px) {
+    @media (max-width: 1024px) {
         width: 100%;
         padding-right: 0;
     }
@@ -31,7 +22,7 @@ const FeatureTextContainer = styled.div`
 
 const FeatureImageContainer = styled.div`
     width: 50%;
-    @media (max-width: 800px) {
+    @media (max-width: 1024px) {
         width: 100%;
     }
 `;
@@ -39,10 +30,10 @@ const FeatureImageContainer = styled.div`
 const Heading = styled.h2`
     font-size: 2.5em;
     padding-right: 4vw;
-    @media (max-width: 800px) {
-        text-align: left;
+    @media only screen and (min-width: 320px) and (max-width: 800px) {
+        font-size: 2.4em;
     }
-    @media (max-width: 1024px) {
+    @media only screen and (min-width: 800px) and (max-width: 1024px) {
         font-size: 3em;
         padding: 0px;
         text-align: left;
@@ -56,6 +47,10 @@ const Paragraph = styled.p`
     @media (max-width: 1024px) {
         padding: 0;
         font-size: 1.4em;
+    }
+    @media (max-width: 800px) {
+        padding: 0;
+        font-size: 1.1em;
     }
 `;
 
@@ -73,6 +68,7 @@ const Features = () => {
             style={{
                 opacity: opac,
             }}
+            id="features"
         >
             <FeatureTextContainer>
                 <Heading>
@@ -85,12 +81,7 @@ const Features = () => {
                 </Paragraph>
             </FeatureTextContainer>
             <FeatureImageContainer>
-                <img
-                    //   src="https://i.ibb.co/txCs4dc/cda48f8169e3308c81af7e5ad8c46834.png"
-                    src="https://i.ibb.co/68GKdzk/Group-17.png"
-                    alt="feature"
-                    style={{ width: '80%' }}
-                ></img>
+                <img src="https://i.ibb.co/68GKdzk/Group-17.png" alt="feature" style={{ width: '80%' }}></img>
             </FeatureImageContainer>
         </FeaturesWrapper>
     );
