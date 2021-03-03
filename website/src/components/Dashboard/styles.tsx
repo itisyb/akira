@@ -385,6 +385,7 @@ export const DashboardStyle = styled(motion.div)`
             background-size: 400% 400%;
             animation: gradient 2s ease infinite;
             -webkit-animation: gradient 2s ease infinite;
+
             @keyframes gradient {
                 0% {
                     background-position: 0% 50%;

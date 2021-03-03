@@ -4,14 +4,32 @@ import * as SC from './styles';
 
 const Dashboard = () => {
     const [ffLayer, setFfLayer] = React.useState(0);
+    const [display, setDisplay] = React.useState('visible');
     const { scrollYProgress } = useViewportScroll();
     const opac = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1, 0]);
     scrollYProgress.onChange((x) => {
         setFfLayer(x > 0.4 ? -1 : 0);
     });
+    useEffect(
+        function mount() {
+            function onScroll() {
+                if (Math.round(opac.get()) >= 0.5) {
+                    setDisplay('visible');
+                } else {
+                    setDisplay('hidden');
+                }
+            }
 
+            window.addEventListener('scroll', onScroll);
+
+            return function unMount() {
+                window.removeEventListener('scroll', onScroll);
+            };
+        },
+        [opac],
+    );
     return (
-        <SC.DashboardStyle className="Dashboard" style={{ opacity: opac }}>
+        <SC.DashboardStyle className="Dashboard" style={{ opacity: opac, visibility: display }}>
             <div className="Background__layer" />
             <SC.NavContainer>
                 <SC.NavLayerLeft>
