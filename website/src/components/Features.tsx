@@ -55,13 +55,9 @@ const Paragraph = styled.p`
 `;
 
 const Features = () => {
-    const [ffLayer, setFfLayer] = React.useState(0);
     const { scrollYProgress } = useViewportScroll();
     const opac = useTransform(scrollYProgress, [0, 0.9, 1], [0, 0, 1]);
 
-    scrollYProgress.onChange((x) => {
-        setFfLayer(x > 0.4 ? -1 : 0);
-    });
 
     return (
         <FeaturesWrapper

@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
-// import Dashboard from '../components/dashboard';
-import Header from '../components/Header';
+import React from 'react';
+import Header from './Header';
 import { motion, useViewportScroll, useTransform } from 'framer-motion';
 import styled from 'styled-components';
-import Dashboard from '../components/Dashboard';
+import Dashboard from './Dashboard';
 import Features from './Features';
-import { Button } from '../components/Header/styles';
 
 const SceneStyle = styled.div`
     height: 100vh;
@@ -103,38 +101,10 @@ const Hero_heading = styled(motion.div)`
     }
 `;
 
-// const isBrowser = () => typeof window !== 'undefined';
-
 const Hero = () => {
-    const [ffLayer, setFfLayer] = React.useState(0);
     const { scrollYProgress } = useViewportScroll();
     const yPosAnim = useTransform(scrollYProgress, [0, 0.2], [0, 200]);
     const opac = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
-    scrollYProgress.onChange((x) => {
-        setFfLayer(x > 0.4 ? -1 : 0);
-    });
-
-    // useEffect(
-    //     function mount() {
-    //         function onScroll() {
-    //             console.log('scroll!');
-    //             console.log(yPosAnim.get());
-    //             if (Math.round(yPosAnim.get()) >= 1 && Math.round(yPosAnim.get()) <= 2) {
-    //                 console.log('scroll!>>>>>>');
-    //                 window.scrollTo(0, 1500);
-    //             }
-    //         }
-
-    //         SetScroll(true);
-
-    //         window.addEventListener('scroll', onScroll);
-
-    //         return function unMount() {
-    //             window.removeEventListener('scroll', onScroll);
-    //         };
-    //     },
-    //     [scroll],
-    // );
 
     return (
         <>
@@ -159,7 +129,6 @@ const Hero = () => {
                                     </Heading>
                                 </Hero_heading>
                             </motion.div>
-                            {/* <Button onClick={() => window.scrollTo(0, 1500)}>Let's Roll</Button> */}
                             <motion.div
                                 style={{
                                     display: 'flex',
@@ -167,8 +136,6 @@ const Hero = () => {
                                     justifyContent: 'center',
                                     position: 'absolute',
                                     bottom: 0,
-                                    // width: '400px',
-                                    // height: '400px',
                                 }}
                                 animate={{ y: [0, 10, 0, -10, 0] }}
                                 transition={{ duration: 5, loop: Infinity, ease: 'linear' }}

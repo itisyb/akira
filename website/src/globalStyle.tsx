@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { BASE_FONT_SIZE, BASE_LINE_HEIGHT, fontFamily } from './design/typography';
+import { BASE_FONT_SIZE, fontFamily } from './design/typography';
 
 export const GlobalStyles = createGlobalStyle`
     html,*, *::before, *::after{

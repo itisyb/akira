@@ -12,7 +12,6 @@ function modularFontSize(power: number) {
 export function modularScale(power: number) {
   const fontSize = modularFontSize(power)
 
-  // attempt to fit line-height a little larger than font-size
   const paddedLineHeight = fontSize * 1.1
   const lineHeight =
     paddedLineHeight - (paddedLineHeight % BASE_LINE_HEIGHT) + BASE_LINE_HEIGHT

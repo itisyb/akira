@@ -1,13 +1,6 @@
 import { Fragment } from 'react';
 import Head from 'next/head';
-import styled from 'styled-components';
-import Header from '../Header';
-import Hero from './Hero';
-
-// const Title = styled.h1`
-//   font-size: 50px;
-//   color: ${({ theme }) => theme.colors.primary};
-// `
+import Hero from '../components/Hero';
 
 const Home = () => (
     <Fragment>

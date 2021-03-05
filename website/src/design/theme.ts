@@ -7,7 +7,6 @@ interface ISet {
 
 export interface ITheme {
     main: ISet & { link : string }
-    // dashboard: IDashboard
 }
 
 export const darkTheme: ITheme = {
