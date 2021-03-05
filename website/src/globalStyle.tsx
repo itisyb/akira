@@ -1,6 +1,6 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components"
 
-import { BASE_FONT_SIZE, fontFamily } from './design/typography';
+import { BASE_FONT_SIZE, fontFamily } from "./design/typography"
 
 export const GlobalStyles = createGlobalStyle`
     html,*, *::before, *::after{
@@ -18,4 +18,4 @@ export const GlobalStyles = createGlobalStyle`
         -moz-osx-font-smoothing: grayscale;
         background-color: #090312;
         color: #fff;
-    }`;
+    }`

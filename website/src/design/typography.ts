@@ -1,4 +1,5 @@
-const FONT_BODY = "-apple-system,BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol"
+const FONT_BODY =
+  "-apple-system,BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol"
 const FONT_PARAGRAPH = "Segoe UI"
 
 export const BASE_FONT_SIZE = 20
